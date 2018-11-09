@@ -1,0 +1,31 @@
+{
+  "name": "pwa-study",
+  "version": "1.0.0",
+  "description": "curso de PWA da treina WEB",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wemboava/pwa-study.git"
+  },
+  "keywords": [
+    "pwa"
+  ],
+  "author": "w.emboava.o@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wemboava/pwa-study/issues"
+  },
+  "homepage": "https://github.com/wemboava/pwa-study#readme",
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^8.0.4",
+    "babel-preset-env": "^1.7.0",
+    "webpack": "^4.25.1"
+  },
+  "dependencies": {
+    "web-push": "^3.3.3"
+  }
+}
