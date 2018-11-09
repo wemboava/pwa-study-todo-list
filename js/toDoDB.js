@@ -1,23 +1,43 @@
-var mockDB = [];
+let request,
+    db;
+
+function getObjectStore(){
+    return db.transaction(['ToDoItems'], 'readwrite').objectStore('ToDoItems');
+}
 
 export const DB = {
     start(){
         return new Promise(resolve => {
-            mockDB = [];
-            resolve(this);
+            request = indexedDB.open('toDo', 1);
+            request.onsuccess = (event) => {
+                db = request.result;
+                resolve(this);
+            }
+
+            request.onupgradeneeded = (event) => {
+                db = event.target.result;
+                db.createObjectStore('ToDoItems', { keyPath: 'id' });
+            }
         })
     },
+    get request(){ return request; },
+    get db(){ return db; },
     selectedItem: {},
     find(id){
         return new Promise(resolve => {
-            var item = mockDB.find(item => item.id == id);
-            this.selectedItem = item;
-            resolve(item);
+            var request = getObjectStore().get(+id);
+            request.onsuccess = (event) => {
+                this.selectedItem = request.result;
+                resolve(request.result);
+            }
         })
     },
     findAll(){
         return new Promise(resolve => {
-            resolve(mockDB);
+            var request = getObjectStore().getAll();
+            request.onsuccess = (event) => {
+                resolve(request.result);
+            }
         })
     },
     insert(item){
@@ -25,54 +45,79 @@ export const DB = {
             item.id = (new Date()).getTime();
             item.isChecked = false;
 
-            mockDB.push(item);
-            resolve(this.findAll());
+            var request = getObjectStore().add(item);
+            request.onsuccess = (event) => {
+                resolve(this.findAll())
+            }
         })
     },
     update(item){
         return new Promise(resolve => {
-            var selectedItem = mockDB.find(dbItem => dbItem.id == item.id),
-                itemIndex = mockDB.indexOf(selectedItem);
-
-            if(selectedItem){
-                selectedItem = Object.assign(selectedItem, item);
-                mockDB[itemIndex] = selectedItem;
-            }
-
-            resolve(this.findAll());
+            var updatedItem = Object.assign(this.selectedItem, item);
+            var request = getObjectStore().put(updatedItem);
+            request.onsuccess = (event) => { resolve(this.findAll()) }
         })
     },
     remove(id){
         return new Promise(resolve => {
-            var selectedItem = mockDB.find(dbItem => dbItem.id == id),
-                itemIndex = mockDB.indexOf(selectedItem);
-
-            if(selectedItem){
-                mockDB.splice(index, 1);
-            }
-
-            resolve(this.findAll());
+            var request = getObjectStore().delete(id);
+            request.onsuccess = (event) => { resolve(this.findAll()) }
         })
     },
     checkAll(isChecked = false){
+        var isAllUpdated = false,
+            isUpdated = false;
         return new Promise(resolve => {
-            mockDB.map(item => {
-                item.isChecked = isChecked;
-                return item;
-            })
-            resolve(this.findAll());
+            getObjectStore().openCursor().onsuccess = (event) => {
+                var cursor = event.target.result;
+                if(cursor){
+                    isUpdated = false;
+                    var newData = cursor.value;
+                    newData.isChecked = isChecked;
+                    var request = cursor.update(newData);
+                    request.onsuccess = () => {
+                        isUpdated = true;
+                        if(isAllUpdated && isUpdated){
+                            resolve(this.findAll());
+                        }
+                    }
+                    cursor.continue();
+                }else{
+                    isAllUpdated = true;
+                    if(isAllUpdated && isUpdated){
+                        resolve(this.findAll());
+                    }
+                }
+            }
         })
     },
     clearAll(){
+        var isAllRemoved = false,
+            isRemoved = false;
         return new Promise(resolve => {
-            var newDB = [];
-            mockDB.forEach(item => {
-                if(!item.isChecked){
-                    newDB.push(item);
+            getObjectStore().openCursor().onsuccess = (event) => {
+                var cursor = event.target.result;
+                if(cursor){
+                    isRemoved = false;
+                    if(cursor.value.isChecked){
+                        var request = cursor.delete();
+                        request.onsuccess = () => {
+                            isRemoved = true;
+                            if(isAllRemoved && isRemoved){
+                                resolve(this.findAll());
+                            }
+                        }
+                    }else{
+                        isRemoved = true;
+                    }
+                    cursor.continue();
+                }else{
+                    isAllRemoved = true;
+                    if(isAllRemoved && isRemoved){
+                        resolve(this.findAll());
+                    }
                 }
-            })
-            mockDB = newDB;
-            resolve(this.findAll());
+            }
         })
     }
 }
