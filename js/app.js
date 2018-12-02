@@ -19,3 +19,10 @@ DB.start().then(db => {
 })
 
 Controller.start();
+
+
+navigator.serviceWorker.addEventListener('message', function(event){
+    if(event.data === 'updateScreens'){
+        DB.findAll().then( itemsList => Template.toDoList(itemsList) );
+    }
+})

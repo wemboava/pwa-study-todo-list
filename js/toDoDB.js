@@ -18,6 +18,10 @@ function postAll(obj){
         'body': JSON.stringify(obj)
     })
         .then(response => response.json())
+        .then(items => {
+            navigator.serviceWorker.controller.postMessage('updateScreens');
+            return items;
+        })
 }
 
 export const DB = {
@@ -71,6 +75,10 @@ export const DB = {
                 var request = getObjectStore().add(item);
                 request.onsuccess = (event) => {
                     resolve(this.findAll())
+
+                    navigator.serviceWorker.ready.then(function(registration){
+                        return registration.sync.register('newItem');
+                    })
                 }
             }
         })
