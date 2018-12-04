@@ -1,4 +1,4 @@
-const PUBLIC_KEY = "BMNsWGP5YVxwlBUaFvpzmYjkvzn_2JMuA9Ne9RS_dLqCe-KnHG7VYmpuciAo0k5L3lN4nN-BePF4bvz_ysP4YzE";
+const PUBLIC_KEY = "BBZejeSiAno7068TAxztOSUED83OOUO9N1BZIVjYeJ79sXbPvKUUA1sm0D2MzO4c4iii0ettoAkOjHgXwpvaa1w";
 
 function urlBase64ToUint8Array(base64String) {
     var padding = "=".repeat((4 - base64String.length % 4) % 4);
