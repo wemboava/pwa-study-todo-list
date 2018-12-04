@@ -25,7 +25,7 @@ function postAll(obj){
 }
 
 export const DB = {
-    getAll, postAll,
+    // getAll, postAll,
     start(){
         return new Promise(resolve => {
             request = indexedDB.open('toDo', 1);
@@ -54,13 +54,9 @@ export const DB = {
     },
     findAll(location = 'server'){
         return new Promise(resolve => {
-            if(navigator.onLine && location === 'server'){
-                resolve(getAll());
-            }else{
-                var request = getObjectStore().getAll();
-                request.onsuccess = (event) => {
-                    resolve(request.result);
-                }
+            var request = getObjectStore().getAll();
+            request.onsuccess = (event) => {
+                resolve(request.result);
             }
         })
     },
@@ -69,17 +65,13 @@ export const DB = {
             item.id = (new Date()).getTime();
             item.isChecked = false;
 
-            if(navigator.onLine){
-                resolve(postAll(item));
-            }else{
-                var request = getObjectStore().add(item);
-                request.onsuccess = (event) => {
-                    resolve(this.findAll())
+            var request = getObjectStore().add(item);
+            request.onsuccess = (event) => {
+                resolve(this.findAll())
 
-                    navigator.serviceWorker.ready.then(function(registration){
-                        return registration.sync.register('newItem');
-                    })
-                }
+                // navigator.serviceWorker.ready.then(function(registration){
+                //     return registration.sync.register('newItem');
+                // })
             }
         })
     },
