@@ -11,7 +11,7 @@
 }
 
 .card-content-container{
-	background-color: rgba(63, 81, 181, 0.55);
+	background-color: rgb(14, 223, 255, .5);
 	position: absolute;
 	top: 0;
 	right: 0;
@@ -38,6 +38,10 @@
 	margin-bottom: 0;
 }
 
+.mdl-layout__header {
+	background-color: rgb(14, 223, 255);
+}
+
 .todo-list-item .mdl-card__title, .todo-list-item .mdl-card__supporting-text{
 	color: white;
 	word-wrap: break-word;
@@ -59,4 +63,8 @@
 
 #item-dialog-picture[src='']{
 	display: none;
+}
+
+.modal {
+	max-width: 290px !important;
 }
