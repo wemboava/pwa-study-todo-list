@@ -1,81 +1,82 @@
 <!DOCTYPE html> 
 <html>
-    <head>          
-        <title>PWA ToDo</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="manifest" href="./manifest.json">
-        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-        <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
-        <link rel="stylesheet" type="text/css" href="./css/styles.css">
-    </head>
-    <body>
+<head>          
+    <title>PWA ToDo</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="manifest" href="./manifest.json">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+    <link rel="stylesheet" type="text/css" href="./css/styles.css">
+</head>
+<body>
 
-        <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
-            <header class="mdl-layout__header">
-                <div class="mdl-layout__header-row">
-                    <span class="mdl-layout-title">PWA ToDo</span>
-                </div>
-            </header>
-            <div class="mdl-layout__drawer">
-                <span class="mdl-layout-title">PWA ToDo</span>
-                <nav class="mdl-navigation">
-                    <a class="mdl-navigation__link" data-action="newItem">New Item</a>
-                    <a class="mdl-navigation__link" data-action="checkAll">Check All</a>
-                    <a class="mdl-navigation__link" data-action="UncheckAll">Uncheck All</a>
-                    <a class="mdl-navigation__link" data-action="clearAll">Clear All</a>
-                </nav>
-            </div>
-            <main class="mdl-layout__content">
-                <div class="page-content">
-                    <ul class="todo-list"></ul>
-                </div>
-            </main>
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    <header class="mdl-layout__header">
+        <div class="mdl-layout__header-row">
+            <span class="mdl-layout-title">PWA ToDo</span>
         </div>
+    </header>
+    <div class="mdl-layout__drawer">
+        <span class="mdl-layout-title">PWA ToDo</span>
+        <nav class="mdl-navigation">
+            <a class="mdl-navigation__link" data-action="newItem">New Item</a>
+            <a class="mdl-navigation__link" data-action="checkAll">Check All</a>
+            <a class="mdl-navigation__link" data-action="uncheckAll">Uncheck All</a>
+            <a class="mdl-navigation__link" data-action="clearAll">Clear All</a>
+        </nav>
+    </div>
+    <main class="mdl-layout__content">
+        <div class="page-content">
+            <ul class="todo-list" ></ul>
+        </div>
+    </main>
+</div>
 
-        <dialog class="mdl-dilog modal" id="item-dialog">
-            <div class="mdl-dialog__content">
-                <img src="" id="item-dialog-picture" width="230" height="200"/>
-                <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect open-camera" data-action="startCamera">
-                    <i class="material-icons">camera_alt</i>
-                </button>
-                <form action="#">
-                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                        <input class="mdl-textfield__input" type="text" id="title" maxlength="30" placeholder="Title">
-                    </div>
-                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                        <textarea class="mdl-textfield__input" id="description" maxlength="100" rows="4" placeholder="Description"></textarea>
-                    </div>
-                </form>
+<dialog class="mdl-dialog" id="item-dialog">
+    <div class="mdl-dialog__content">
+        <img src="" id="item-dialog-picture" width="230" height="200"/>
+        <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect open-camera" data-action="startCamera">
+            <i class="material-icons">camera_alt</i>
+        </button>
+        <form action="#">
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" type="text" id="title" maxlength="30" placeholder="Title">
             </div>
-            <div class="mdl-dialog__actions">
-                <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect close">
-                    <i class="material-icons">close</i>
-                </button>
-                <button class="mdl-button mdl-js-button mdl-js-ripple-effect add" data-action="save">
-                    SAVE
-                </button>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <textarea class="mdl-textfield__input" id="description" maxlength="100" rows="4" placeholder="Description"></textarea>
             </div>
-        </dialog>
+        </form>
+    </div>
+    <div class="mdl-dialog__actions">
+        <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect close">
+            <i class="material-icons">close</i>
+        </button>
+        <button class="mdl-button mdl-js-button mdl-js-ripple-effect add" data-action="save">
+            Salvar
+        </button>
+    </div>
+</dialog>
 
-        <dialog class="mdl-dilog" id="camera-dialog">
-            <div class="mdl-dialog__content">
-                <video id="camera-tag" width="230" height="200" autoplay></video>
-                <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect shoot" data-action="shoot">
-                    <i class="material-icons">camera_alt</i>
-                </button>
-            </div>
-            <div class="mdl-dialog__actions">
-                <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect close">
-                    <i class="material-icons">close</i>
-                </button>
-                <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect shoot" data-action="changeSource">
-                    <i class="material-icons">switch_camera</i>
-                </button>
-            </div>
-        </dialog>
 
-        <script async src="https://code.getmdl.io/1.3.0/material.min.js"></script>
-        <script async src="./app.bundle.js"></script>
-    </body>
+<dialog class="mdl-dialog" id="camera-dialog">
+    <div class="mdl-dialog__content">
+        <video id="camera-tag" width="230" height="200" autoplay ></video>
+        <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect shoot" data-action="shoot">
+            <i class="material-icons">camera_alt</i>
+        </button>
+    </div>
+    <div class="mdl-dialog__actions">
+        <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect close">
+            <i class="material-icons">close</i>
+        </button>
+        <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect shoot" data-action="changeSource">
+            <i class="material-icons">switch_camera</i>
+        </button>
+    </div>
+</dialog>
+
+<script async src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+<script async src="./dist/app.bundle.js"  ></script>
+</body>
 </html>
